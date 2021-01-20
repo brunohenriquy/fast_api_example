@@ -4,6 +4,8 @@ from sqlalchemy import Column, String, Integer, Boolean, DateTime
 
 
 class Task(Base, AuditMixin):
+    import pydevd_pycharm
+    pydevd_pycharm.settrace('localhost', port=8787, stdoutToServer=True, stderrToServer=True)
     id = Column(Integer, primary_key=True)
     name = Column(String, default="unnamed")
     completed = Column(Boolean, default=False)
