@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Instructions:
+# Put this file into your .git/hooks folder and set as executable (chmod +x pre-commit)
+# If you want to skip the hook just add the --no-verify: git commit --no-verify
+
 #  -----   Start Check prospector   ------
 set -u
 
@@ -25,8 +29,8 @@ cd ..
 # Modify this
 # WORD_LIST='list\|of\|words\|splitted\|by\|slash\|and\|pipe'
 # WORD_LIST="puts\|debugger\|binding.pry\|alert(\|console.log("
-WORD_LIST="pydevd_pycharm"
-FILE_TO_EXCLUDE="pre-commit.sh"
+WORD_LIST="pydevd_pycharm\|pdb"
+FILES_TO_EXCLUDE=(pre-commit.sh pyproject.toml poetry.lock)
 
 if git rev-parse --verify HEAD >/dev/null 2>&1; then
     against=HEAD
@@ -34,9 +38,11 @@ else
     against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
 fi
 
+#Fix this, not working with HEAD
+against=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+
 for FILE in `git diff-index --name-status --cached $against -- | cut -c3-` ; do
-    echo $FILE
-    if [ $FILE != $FILE_TO_EXCLUDE ]
+    if ! [[ ${FILES_TO_EXCLUDE[*]} =~ $FILE ]]
     then
         # Check if the file contains one of the words in WORD_LIST
         word=$(grep -w $WORD_LIST $FILE)
