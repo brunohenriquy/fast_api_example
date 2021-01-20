@@ -1,6 +1,6 @@
 from loguru import logger
 
-from todo.dao import task
+from todo.dao import task, task_2
 
 
 async def add_task(task_data):
