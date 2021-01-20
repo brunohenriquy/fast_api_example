@@ -26,7 +26,7 @@ async def update_task(*, id: int, data: TaskEndpoint):
 
 
 @todo_router.get("/get/{id}", status_code=status.HTTP_200_OK)
-async def update_task(*, id: int):
+async def get_task(*, id: int):
     try:
         return await services_todo.get_task(id)
     except Exception as e:
